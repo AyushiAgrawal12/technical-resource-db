@@ -14,6 +14,11 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOGS_DIR = BASE_DIR.parent / "logs"
+
+
+# Create if, does not exist list of directories
+LOGS_DIR.mkdir(exist_ok=True)
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +44,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "django_filters",
+    "guardian",
 ]
 
 MIDDLEWARE = [
@@ -83,6 +92,15 @@ DATABASES = {
 }
 
 
+# Authentication backends
+# https://docs.djangoproject.com/en/3.2/ref/settings/#authentication-backends
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
+]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -125,3 +143,56 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Logging
+# https://docs.djangoproject.com/en/3.2/topics/logging/
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "technicalresourcedb_handler": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "formatter": "verbose",
+            "filename": LOGS_DIR / "debug.log",
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 7,
+        },
+    },
+    "loggers": {
+        "technicalresourcedb_logger": {
+            "handlers": ["technicalresourcedb_handler"],
+            "level": "DEBUG",
+        }
+    },
+}
+
+
+# REST Framework
+# https://www.django-rest-framework.org/
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
