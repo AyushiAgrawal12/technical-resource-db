@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Technical Resource Database for upvoted links to study from."
 authors = [
     "Amogh Madan <amoghmadaan@gmail.com>",
-    "Ayushi Agrawal <ayushiag@gmail.com>",
+    "Ayushi Agrawal <ayushiag666@gmail.com>",
 ]
 readme = "README.md"
 packages = [{include = "technical_resource_db"}]
