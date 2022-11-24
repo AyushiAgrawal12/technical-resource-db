@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     build: .
-    command: gunicorn wsgi:application --chdir=/split-wiser/src -b=0.0.0.0:8000 -w=4 -t=10
+    command: gunicorn wsgi:application --chdir=/technical-resource-db/technical_resource_db_py -b=0.0.0.0:8000 -w=4 -t=10
     container_name: "Technical-Resource-Db-Backend"
     environment:
       TECHNICAL_RESOURCE_DB: ${TECHNICAL_RESOURCE_DB:-development}

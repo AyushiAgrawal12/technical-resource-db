@@ -1,6 +1,6 @@
 FROM python:3.10-slim-bullseye
 
-LABEL maintainer="Ayushi Agrawal <ayushiag@gmail.com>"
+LABEL maintainer="Ayushi Agrawal <ayushiag666@gmail.com>"
 
 WORKDIR /technical-resource-db
 
